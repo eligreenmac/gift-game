@@ -7,7 +7,7 @@ const questions = [
         answers: ["שכנה מקומה 6", "ההוא שמעשן וזורק בדלים", "לאפה גרין", "שרה נתניהו"],
         // 'correct' מייצג את המיקום של התשובה הנכונה בסוגריים המרובעים (מתחיל מ-0)
         // בדוגמה זו התשובה השלישית היא הנכונה, לכן רשום 2
-        correct: 2 
+        correct: 2
     },
     {
         question: "מי האישה הכי טובה בעולם ?",
@@ -25,8 +25,36 @@ const questions = [
 // משתנים לשמירת המצב הנוכחי של המשחק
 let currentQuestionIndex = 0;
 
+// יצירת אובייקט סאונד עבור הלחיצות
+const clickSound = new Audio('touch.mp3');
+const correctSound = new Audio('2.mp3');
+const prizeSound = new Audio('3.mp3');
+const errorSound = new Audio('error.mp3');
+
+// פונקציה להפעלת צליל (עם איפוס שיאפשר ללחוץ מהר)
+function playClickSound() {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
+}
+
+function playCorrectSound() {
+    correctSound.currentTime = 0;
+    correctSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
+}
+
+function playPrizeSound() {
+    prizeSound.currentTime = 0;
+    prizeSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
+}
+
+function playErrorSound() {
+    errorSound.currentTime = 0;
+    errorSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
+}
+
+
 // תפיסת האלמנטים מה-HTML (נשתמש ב-let כדי להקצות אותם בטעינה)
-let startScreen, questionScreen, endScreen, startBtn, questionText, answersContainer, progressBar, restartBtn, giftBox, prizeImage;
+let startScreen, questionScreen, endScreen, startBtn, questionText, answersContainer, progressBar, restartBtn, giftBox, prizeImage, flipImage;
 
 // אנחנו מוודאים שכל העמוד נטען לפני שאנחנו מנסים לתפוס כפתורים ולהוסיף להם לחיצות
 document.addEventListener('DOMContentLoaded', () => {
@@ -40,23 +68,31 @@ document.addEventListener('DOMContentLoaded', () => {
     restartBtn = document.getElementById('restart-btn');
     giftBox = document.getElementById('gift-box');
     prizeImage = document.getElementById('prize-image');
+    flipImage = document.getElementById('flip-image');
 
     // הוספת מאזינים לכפתורים רק אחרי שווידאנו שהם קיימים
-    if (startBtn) startBtn.addEventListener('click', startGame);
-    if (restartBtn) restartBtn.addEventListener('click', startGame);
+    if (startBtn) startBtn.addEventListener('click', () => { playClickSound(); startGame(); });
+    if (restartBtn) restartBtn.addEventListener('click', () => { playClickSound(); startGame(); });
     if (giftBox) giftBox.addEventListener('click', openGift);
 });
 
 function openGift() {
     if (giftBox.classList.contains('open')) return;
     
+    // הפעלת סאונד ההפתעה
+    playPrizeSound();
+    
     giftBox.classList.remove('shake');
     giftBox.classList.add('open');
     
-    // חכה שהקופסה "תיפתח" ואז תקפיץ את התמונה החוצה
+    // חכה שהקופסה "תיפתח" ואז תקפיץ את 2 התמונות החוצה
     setTimeout(() => {
         giftBox.style.display = 'none';
+        
+        // הצג את שתי התמונות (הן יעופו באנימציה לצדדים שונים)
         prizeImage.classList.add('show');
+        flipImage.classList.add('show');
+        
         restartBtn.classList.remove('hidden');
     }, 600);
 }
@@ -66,6 +102,10 @@ function startGame() {
     startScreen.classList.remove('active');
     endScreen.classList.remove('active');
     questionScreen.classList.add('active');
+    
+    // מציג את תמונת הרקע רק במסך השאלות
+    document.body.classList.add('questions-bg');
+    
     updateProgress();
     showQuestion();
 }
@@ -102,7 +142,15 @@ function updateProgress() {
 
 function selectAnswer(e) {
     const selectedBtn = e.target;
+    // רגע לפני שמנגנים את צליל הלחיצה נבדוק אם התשובה נכונה
     const isCorrect = selectedBtn.dataset.correct === "true";
+    
+    // הפעלת סאונד כפתור או סאונד הצלחה בהתאם
+    if (isCorrect) {
+        playCorrectSound();
+    } else {
+        playErrorSound(); // מנגן צליל שגיאה אם התשובה לא נכונה
+    }
     
     if (isCorrect) {
         // צבע את התשובה בירוק
@@ -146,10 +194,17 @@ function showEndScreen() {
     // מעדכן שכבר סיימנו 100% מהפס התקדמות
     progressBar.style.width = '100%';
     
+    // מסיר את הרקע כדי שמסך הפרס יראה נקי כמו מסך הפתיחה
+    document.body.classList.remove('questions-bg');
+    
     // איפוס מצב המתנה למקרה של משחק חוזר
     giftBox.classList.remove('open');
     giftBox.classList.add('shake');
     giftBox.style.display = 'block';
+    
+    // הסתרת 2 התמונות
     prizeImage.classList.remove('show');
+    flipImage.classList.remove('show');
+    
     restartBtn.classList.add('hidden');
 }

@@ -40,8 +40,8 @@
 
         <!-- מסך סיום פרס -->
         <div id="end-screen" class="screen">
-            <h1 id="end-title">כל הכבוד! 🎉</h1>
-            <p id="end-message">ענית נכונה על כל השאלות! לחץ על המתנה כדי לפתוח אותה:</p>
+            <h1 id="end-title" style="direction: ltr; font-family: sans-serif;">С 8 марта любимая !!! ❤️</h1>
+            <p id="end-message" style="direction: ltr;">Нажми на подарок:</p>
             
             <div class="prize-container">
                 <div id="gift-box" class="gift-box shake">
@@ -50,8 +50,14 @@
                     <div class="gift-ribbon-v"></div>
                     <div class="gift-ribbon-h"></div>
                 </div>
-                <!-- המשתמש יחליף את 'prize.jpg' בשם הקובץ של התמונה שלו -->
-                <img id="prize-image" class="hidden-prize" src="prize.jpeg" alt="הפרס שלך" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/f8fafc?text=הכנס+את+התמונה+שלך+לתיקייה+במקום+prize.jpg'">
+                
+                <div class="prizes-wrapper">
+                    <!-- המשתמש יחליף את 'prize.jpeg' בשם הקובץ של התמונה שלו -->
+                    <img id="prize-image" class="hidden-prize prize-left" src="prize.jpeg" alt="הפרס שלך" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/f8fafc?text=הכנס+את+התמונה+שלך+לתיקייה+במקום+prize.jpg'">
+                    
+                    <!-- תמונה שנייה שתעוף הצידה -->
+                    <img id="flip-image" class="hidden-prize prize-right" src="flip.png" alt="הפתעה שנייה" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/f8fafc?text=חסר+flip.png'">
+                </div>
             </div>
             
             <button id="restart-btn" class="secondary-btn hidden">שחק שוב 🔄</button>

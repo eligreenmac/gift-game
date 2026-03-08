@@ -19,6 +19,7 @@
 
 body {
     background-color: var(--bg-color);
+    transition: background-image 0.8s ease-in-out, background-color 0.8s ease-in-out;
     color: var(--text-primary);
     min-height: 100vh;
     display: flex;
@@ -27,6 +28,32 @@ body {
     overflow: hidden;
     position: relative;
     padding: 20px;
+}
+
+/* Body class with background image dynamically added via JS */
+body.questions-bg {
+    background-image: url('1.jpeg');
+    background-size: 300px;
+    background-position: top left;
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+/* Semi-transparent overlay to ensure text readability against the background image */
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.4); /* Dark overlay */
+    z-index: -1; /* Place it behind the glass container but above the image */
+    transition: background-color 0.8s ease;
+}
+
+body.no-overlay::before {
+    background-color: transparent;
 }
 
 /* Animated Background Shapes */
@@ -115,6 +142,7 @@ h1 {
     margin-bottom: 1rem;
     font-weight: 800;
     background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -242,7 +270,7 @@ button {
 .prize-container {
     margin: 2rem 0;
     position: relative;
-    min-height: 200px;
+    min-height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -329,31 +357,52 @@ button {
     animation: none;
 }
 
-/* Hidden Prize to Popup */
+/* Wrapper for multiple prizes */
+.prizes-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    position: absolute;
+    top: -50px;
+    width: 100%;
+}
+
+/* Hidden Prizes */
 .hidden-prize {
     display: none;
-    max-width: 100%;
-    max-height: 350px;
+    max-width: 45%;
+    max-height: 250px;
     border-radius: 16px;
     box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
     object-fit: contain;
     border: 2px solid var(--glass-border);
     position: relative;
     z-index: 5;
-    margin-top: -60px;
-    transform: scale(0.1) translateY(100px);
     opacity: 0;
 }
 
-.hidden-prize.show {
+.prize-left.show {
     display: block;
-    animation: popOut 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation: popOutLeft 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-@keyframes popOut {
-    0% { transform: scale(0.1) translateY(100px); opacity: 0; }
-    60% { transform: scale(1.1) translateY(-20px); opacity: 1; }
-    100% { transform: scale(1) translateY(0); opacity: 1; }
+.prize-right.show {
+    display: block;
+    animation: popOutRight 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.2s; /* קצת דיליי כדי שייראו שתי קפיצות */
+}
+
+@keyframes popOutLeft {
+    0% { transform: scale(0.1) translate(100px, 100px); opacity: 0; }
+    60% { transform: scale(1.1) translate(-10px, -20px); opacity: 1; }
+    100% { transform: scale(1) translate(0, 0); opacity: 1; }
+}
+
+@keyframes popOutRight {
+    0% { transform: scale(0.1) translate(-100px, 100px); opacity: 0; }
+    60% { transform: scale(1.1) translate(10px, -20px); opacity: 1; }
+    100% { transform: scale(1) translate(0, 0); opacity: 1; }
 }
 
 .hidden {
