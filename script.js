@@ -28,7 +28,8 @@ let currentQuestionIndex = 0;
 // יצירת אובייקט סאונד עבור הלחיצות
 const clickSound = new Audio('touch.mp3');
 const correctSound = new Audio('2.mp3');
-const prizeSound = new Audio('3.mp3');
+const prizeSound = new Audio('3.mp3'); // מנגן במסך הסיום עצמו
+const finalSecretSound = new Audio('8.mp3'); // מתנגן כשלוחצים על המתנה
 const errorSound = new Audio('error.mp3');
 
 // פונקציה להפעלת צליל (עם איפוס שיאפשר ללחוץ מהר)
@@ -45,6 +46,11 @@ function playCorrectSound() {
 function playPrizeSound() {
     prizeSound.currentTime = 0;
     prizeSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
+}
+
+function playFinalSecretSound() {
+    finalSecretSound.currentTime = 0;
+    finalSecretSound.play().catch(error => console.log('Audio playback prevented by browser:', error));
 }
 
 function playErrorSound() {
@@ -79,8 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 function openGift() {
     if (giftBox.classList.contains('open')) return;
     
-    // הפעלת סאונד ההפתעה
-    playPrizeSound();
+    // עצירת מוזיקת הסיום (במידה ועוד מתנגנת) והפעלת סאונד ההפתעה
+    prizeSound.pause();
+    playFinalSecretSound();
     
     giftBox.classList.remove('shake');
     giftBox.classList.add('open');
@@ -193,6 +200,9 @@ function showEndScreen() {
     endScreen.classList.add('active');
     // מעדכן שכבר סיימנו 100% מהפס התקדמות
     progressBar.style.width = '100%';
+    
+    // מנגן את המנגינה של המסך הסופי לפני פתיחת המתנה
+    playPrizeSound();
     
     // מסיר את הרקע כדי שמסך הפרס יראה נקי כמו מסך הפתיחה
     document.body.classList.remove('questions-bg');
