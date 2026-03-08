@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חידון טריוויה</title>
+    <!-- תגיות SEO -->
+    <meta name="description" content="חידון טריוויה כיפי עם פרס שווה בסוף!">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- צורות רקע אנימטיביות -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    
+    <main class="glass-container">
+        <!-- מסך התחלה -->
+        <div id="start-screen" class="screen active">
+            <h1>חידון טריוויה</h1>
+            <p>ענה נכונה על 3 שאלות ופתח את הפרס הסודי!</p>
+            <button id="start-btn" class="primary-btn">התחל משחק 🚀</button>
+        </div>
+
+        <!-- מסך שאלות -->
+        <div id="question-screen" class="screen">
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
+            </div>
+            <h2 id="question-text">טוען שאלה...</h2>
+            <div id="answers-container" class="answers-grid">
+                <!-- הכפתורים מוזרקים לכאן באמצעות סקריפט -->
+            </div>
+        </div>
+
+        <!-- מסך סיום פרס -->
+        <div id="end-screen" class="screen">
+            <h1 id="end-title">כל הכבוד! 🎉</h1>
+            <p id="end-message">ענית נכונה על כל השאלות! לחץ על המתנה כדי לפתוח אותה:</p>
+            
+            <div class="prize-container">
+                <div id="gift-box" class="gift-box shake">
+                    <div class="gift-lid"></div>
+                    <div class="gift-body"></div>
+                    <div class="gift-ribbon-v"></div>
+                    <div class="gift-ribbon-h"></div>
+                </div>
+                <!-- המשתמש יחליף את 'prize.jpg' בשם הקובץ של התמונה שלו -->
+                <img id="prize-image" class="hidden-prize" src="prize.jpeg" alt="הפרס שלך" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x300/1e293b/f8fafc?text=הכנס+את+התמונה+שלך+לתיקייה+במקום+prize.jpg'">
+            </div>
+            
+            <button id="restart-btn" class="secondary-btn hidden">שחק שוב 🔄</button>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
